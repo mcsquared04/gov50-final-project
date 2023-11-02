@@ -39,6 +39,7 @@ dist_plot <-
        y = "Total Number")
 dist_plot
 
+
 ```
 
 ```{r print-code, ref.label=knitr::all_labels(), echo = TRUE, eval=FALSE}
