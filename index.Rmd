@@ -11,7 +11,13 @@ output:
 
 ## Project Proposal
 
-Does perceived attractiveness, both personality and physical, affect trends in voting or electing candidates for positions in the workforce? In this study, I will be examining the relationship between the perceived attractiveness of a candidate for a position, including promotions, job title, leadership role, etc., and the trends that follow. I hypothesize that while charisma, intelligence, and fluency play a critical role in the results of an election or vote, physical attractiveness, whether subconscious or not, plays a larger role than one would expect in selecting candidates. I would expect that individuals are biased toward those they deem more attractive. Even from a younger age, social groups created based on popularity, or socially attractive, tiers. Thus, often the more popular students are elected for class president. Furthermore, "pretty privilege" is a term often thrown around by media, and I would like to examine the extent of its power. My explanatory variable is whether individuals who select candidates have a preference for those who are deemed more attractive by societal standards. In the context of my study, I am defining societal standards as charismatic and conventionally physically attractive. The variables are measured by levels of attractiveness. In one of the datasets I will be referencing, attractiveness is scaled from extremely unattractive, moderately unattractive, slightly unattractive, neither attractive nor unattractive, slightly attractive, moderately attractive, and extremely attractive. In my analysis, I will be describing this scale from 1-5, from unattractive to attractive. My outcome variable is the proportion of candidates who have been selected for specific positions based on their attractiveness. This variable is measured from "Replication Data for 'The Politics of Beauty: The Effects of Partisan Bias on Physical Attractiveness' (Nicholson, Stephen; Coe, Chelsea; Emory, Jason; Song, Anna, 2016). This data provides evidence of a pattern that female partisans were more likely to rate a target person—in the context of my research, a candidate—more physically attractive when they held a similar preference to the candidate. Additionally, regardless of gender, partisans rated target individuals as less attractive if they held a dissimilar preference.
+Does perceived attractiveness, both personality and physical, affect trends in voting or electing candidates for positions in the workforce? In this study, I will be examining the relationship between the perceived attractiveness of a candidate for a position, including promotions, job title, leadership role, etc., and the trends that follow. 
+
+I hypothesize that while charisma, intelligence, and fluency play a critical role in the results of an election or vote, physical attractiveness, whether subconscious or not, plays a larger role than one would expect in selecting candidates. I would expect that individuals are biased toward those they deem more attractive. Even from a younger age, social groups created based on popularity, or socially attractive, tiers. Thus, often the more popular students are elected for class president. Furthermore, "pretty privilege" is a term often thrown around by media, and I would like to examine the extent of its power. My explanatory variable is whether individuals who select candidates have a preference for those who are deemed more attractive by societal standards. 
+
+In the context of my study, I am defining societal standards as charismatic and conventionally physically attractive. The variables are measured by levels of attractiveness. In one of the datasets I will be referencing, attractiveness is scaled from extremely unattractive, moderately unattractive, slightly unattractive, neither attractive nor unattractive, slightly attractive, moderately attractive, and extremely attractive. In my analysis, I will be describing this scale from 1-5, from unattractive to attractive. My outcome variable is the proportion of candidates who have been selected for specific positions based on their attractiveness. 
+
+This variable is measured from "Replication Data for 'The Politics of Beauty: The Effects of Partisan Bias on Physical Attractiveness' (Nicholson, Stephen; Coe, Chelsea; Emory, Jason; Song, Anna, 2016). This data provides evidence of a pattern that female partisans were more likely to rate a target person—in the context of my research, a candidate—more physically attractive when they held a similar preference to the candidate. Additionally, regardless of gender, partisans rated target individuals as less attractive if they held a dissimilar preference.
 
 Link to my datasource: https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/XIPZQT
 
@@ -41,6 +47,40 @@ dist_plot
 
 
 ```
+
+
+```{r}
+# change attractrate to numeric values
+data$attractrate <- unclass(data$attractrate)
+
+# create variables
+data <- data %>%
+  mutate(Gender = ifelse(gender == 1, "Female", "Male"),
+         `Registered Party` = ifelse(PR == 1, "Republican", "Democrat"))
+
+# scatterplot
+scatter <-
+  ggplot(data, aes(x = Gender, y = attractrate, color = `Registered Party`)) +
+  geom_point(position = position_jitter(width = 0.2), size = 0.5) +
+  labs(x = "Gender", y = "Attractiveness",
+       title = "Perceived Attractiveness by Gender and Political Affiliation") +
+  scale_color_manual(values = c(Democrat = "#4F5B67", Republican = "#B24202")) +
+  facet_wrap(~`Registered Party`, scales = "free_y", ncol = 2)
+
+# boxplot
+box <-
+  ggplot(data, aes(x = Gender, y = attractrate, color = `Registered Party`)) +
+  geom_boxplot(aes(group = Gender), position = position_dodge(width = 0.8), width = 0.4, alpha = 0.5) +
+  labs(x = "Gender", y = "Attractiveness",
+       title = "Perceived Attractiveness by Gender and Political Affiliation") +
+  scale_color_manual(values = c(Democrat = "#4F5B67", Republican = "#B24202")) +
+  facet_wrap(~`Registered Party`, scales = "free_y", ncol = 2)
+
+
+scatter
+box
+```
+My graph displays the data between male and female by registered political party and how each individual rated a partisan on attractiveness knowing their political identity. While my visualizations do not reveal the target partisan's politcal party, we can see from the scatterplot and the boxplot—especially—that the ratings tended to be similar regardless of party and gender.
 
 ```{r print-code, ref.label=knitr::all_labels(), echo = TRUE, eval=FALSE}
 
