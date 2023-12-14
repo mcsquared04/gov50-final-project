@@ -1,7 +1,6 @@
 ---
-title: "Gov 50 Final Project"
+title: "Appearance Bias and Implications"
 author: "Mina Chae"
-description: "My final project"
 output:
   distill::distill_article:
     self_contained: false
@@ -136,7 +135,7 @@ My analysis has three key limitations:
 \end{enumerate}
 
 ## Ways to Improve
-I would start by collecting more diverse and representative data, with categories that range beyond two political parties and two genders. Furthermore, additional variables that relate to social dynamics, such as popularity, leadership qualities, charisma, etc. would provide a more nuanced perspective on attractiveness rating perceptions. Another key variable could be religious affiliation, sourced from both the respondent and target candidate. Additionally, I would include more insight about preferences. For example, a female who is attracted to other females may rate target candidates a lower attractiveness. Further research into these potential factors could provide additional insights into the dynamics of attractiveness ratings among different groups.
+I would start by collecting more diverse and representative data, with categories that range beyond two political parties and two genders. Furthermore, additional variables that relate to social dynamics, such as popularity, leadership qualities, charisma, etc. would provide a more nuanced perspective on attractiveness rating perceptions. Another key variable could be religious affiliation, sourced from both the respondent and target candidate. Additionally, I would include more insight about preferences. For example, a female who is attracted to other females may rate target candidates a lower attractiveness. I would conclude my new data by including how perceived attractiveness has changed daily life. Further research into these potential factors could provide additional insights into the dynamics of attractiveness ratings among different groups.
 
 Link to my datasource: https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/XIPZQT
 
