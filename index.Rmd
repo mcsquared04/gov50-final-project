@@ -128,11 +128,9 @@ With a regression table, I found that the distributions of attractiveness rating
 ## Limitations of Analysis and Threats to Inference
 My analysis has three key limitations:
 
-\begin{enumerate}
-  \item My study completely relies on a data from one source. This limits the general applicability of my analysis as the scope of my sourced            data set is limited to the American political landscape.
-  \item We must consider that the sourced data relied on a self-report method, which is a subjective method. Therefore, each respondent may            have different criteria for what they consider "neither attractive nor unattractive," for example. Furthermore, a partisan may be more         hesitant to express extreme responses such as "extremely unattractive."
-  \item My study simplifies attractiveness ratings to physical appearance. In reality, individuals tend to find personality traits or charisma         as additional indicators of attractiveness.
-\end{enumerate}
+1. My study completely relies on a data from one source. This limits the general applicability of my analysis as the scope of my sourced data set is limited to the American political landscape.
+2. We must consider that the sourced data relied on a self-report method, which is a subjective method. Therefore, each respondent may have different criteria for what they consider "neither attractive nor unattractive," for example. Furthermore, a partisan may be more hesitant to express extreme responses such as "extremely unattractive."
+3. My study simplifies attractiveness ratings to physical appearance. In reality, individuals tend to find personality traits or charisma as additional indicators of attractiveness.
 
 ## Ways to Improve
 I would start by collecting more diverse and representative data, with categories that range beyond two political parties and two genders. Furthermore, additional variables that relate to social dynamics, such as popularity, leadership qualities, charisma, etc. would provide a more nuanced perspective on attractiveness rating perceptions. Another key variable could be religious affiliation, sourced from both the respondent and target candidate. Additionally, I would include more insight about preferences. For example, a female who is attracted to other females may rate target candidates a lower attractiveness. I would conclude my new data by including how perceived attractiveness has changed daily life. Further research into these potential factors could provide additional insights into the dynamics of attractiveness ratings among different groups.
