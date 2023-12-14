@@ -7,22 +7,21 @@ output:
     self_contained: false
 ---
 
+## Introduction
+How do attractiveness ratings of partisans differ between males and females, and how does physical attractiveness result in bias?
 
+I hypothesize that the attractiveness ratings will not be uniform across genders, but across the respective genders for the political affiliations. For example, female Democrats will rate candidates at a similar attractiveness distribution as female Republicans. I predict that occurs due to gender-based bias, where individuals tend to rate individuals of the opposite gender as more physically attractive.
 
-## Project Proposal
+While this study is specific to American political ideology, it highlights the importance of physical privilege and how this privilege contributes to daily life. For example, I noticed that social groups form based on popularity, or socially attractive, tiers. Thus, often the more popular students are elected for class president and other positions. A large scale example of this, however, is the case of Jeremy Meeks, who was arrested in 2014 for being a member of the Crips street gang. After local police uploaded his mugshot, Meeks went quickly gained popularity due to his looks. After his incarceration, Meeks immediately signed to a modeling agency. In the case of Meeks, his looks, alone, secured a stable future after prison. As about 60% of ex-prisoners end up unemployed (Smith 2023), this hints at the privilege associated to meeting societal beauty standards. Therefore, I would like to examine the extent of "pretty privilege" power.
 
-Does perceived attractiveness, both personality and physical, affect trends in voting or electing candidates for positions in the workforce? In this study, I will be examining the relationship between the perceived attractiveness of a candidate for a position, including promotions, job title, leadership role, etc., and the trends that follow. 
+## Data
+In this study, the outcome variable of interest is the attractiveness rating, denoted as "attractrate." The data used for my analysis is cross-sectional and is sourced from "Replication Data for 'The Politics of Beauty: The Effects of Partisan Bias on Physical Attractiveness' (Nicholson, Stephen; Coe, Chelsea; Emory, Jason; Song, Anna, 2016). The attractiveness rating is collected through survey methods, and the respondents provide their assessments on a scale ranging from extremely unattractive, moderately unattractive, slightly unattractive, neither attractive nor unattractive, slightly attractive, moderately attractive, and extremely attractive.
 
-I hypothesize that while charisma, intelligence, and fluency play a critical role in the results of an election or vote, physical attractiveness, whether subconscious or not, plays a larger role than one would expect in selecting candidates. I would expect that individuals are biased toward those they deem more attractive. Even from a younger age, social groups created based on popularity, or socially attractive, tiers. Thus, often the more popular students are elected for class president. Furthermore, "pretty privilege" is a term often thrown around by media, and I would like to examine the extent of its power. My explanatory variable is whether individuals who select candidates have a preference for those who are deemed more attractive by societal standards. 
+In this analysis, I also measured political affiliation, indicated in the dataset by the variable "PR," and gender, represented by the variable "gender." In the data, individuals were limited to the options of labeling themselves as "Republican," or "Not a Republican" and "female," or "Not Female." Following this, my study indicated each individual as either Democratic or Republican, and either male or female.
 
-In the context of my study, I am defining societal standards as charismatic and conventionally physically attractive. The variables are measured by levels of attractiveness. In one of the datasets I will be referencing, attractiveness is scaled from extremely unattractive, moderately unattractive, slightly unattractive, neither attractive nor unattractive, slightly attractive, moderately attractive, and extremely attractive. In my analysis, I will be describing this scale from 1-5, from unattractive to attractive. My outcome variable is the proportion of candidates who have been selected for specific positions based on their attractiveness. 
+Therefore, PR and Gender serve as independent variables in this study, allowing us to explore the distributions between attractiveness ratings and political affiliation, and between attractiveness ratings and gender.
 
-This variable is measured from "Replication Data for 'The Politics of Beauty: The Effects of Partisan Bias on Physical Attractiveness' (Nicholson, Stephen; Coe, Chelsea; Emory, Jason; Song, Anna, 2016). This data provides evidence of a pattern that female partisans were more likely to rate a target person—in the context of my research, a candidate—more physically attractive when they held a similar preference to the candidate. Additionally, regardless of gender, partisans rated target individuals as less attractive if they held a dissimilar preference.
-
-Link to my datasource: https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/XIPZQT
-
-## Data Visualization
-
+## Data Visuals and Analysis
 ```{r setup, include = FALSE}
 options(width = 100)
 library(tidyverse)
@@ -32,22 +31,34 @@ library(ggplot2)
 ```
 
 ```{r}
+# load date
 load(".RData")
 
+# drop na
 data <- x %>%
   drop_na()
+```
+First, I wanted to explore the overall trend of distributions of attractiveness ratings based on registered political party affiliation. The barplot below reveals the counts of each attractiveness rating for each political party. Here, the Republicans are on the right side of the x-axis, represented under "1," and the Democrats are on the left side of the x-axis, represented under "0."
 
-dist_plot <-
-  ggplot(data = data, mapping = aes(x = PR)) +
-  geom_bar(mapping = aes(fill = attractrate), position = "dodge") +
+Both barplots are similar in distribution, both with a slight left-skew distribution. Although, there are slight differences to the distributions——for example, Democrats found more candidates "Extremely unattractive" than Republicans——the differences are not enough to impact the overall distribution. This suggests that political affiliation is not a confounding factor in shaping the overall distribution of attractiveness ratings. Therefore, we can consider gender, without worrying about political affiliatiion as a confounding variable, as a factor that could play a more influential role in shaping attractiveness perceptions.
+
+```{r}
+# new summarized dataset
+data_n <- data %>%
+  group_by(PR, attractrate) %>%
+  summarise(count = n()) %>%
+  ungroup()
+
+# barplot
+bar <- ggplot(data = data_n, aes(x = PR, y = count, fill = factor(attractrate))) +
+  geom_bar(stat = "identity", position = "dodge") +
   labs(title = "Distribution of Attractiveness Ratings of Politicians by Party Identification",
        x = "Registered Party Identification",
-       y = "Total Number")
-dist_plot
-
-
+       y = "Total Number",
+       fill = "Attractiveness Rating") +
+  theme_minimal()
+bar
 ```
-
 
 ```{r}
 # change attractrate to numeric values
@@ -58,6 +69,13 @@ data <- data %>%
   mutate(Gender = ifelse(gender == 1, "Female", "Male"),
          `Registered Party` = ifelse(PR == 1, "Republican", "Democrat"))
 
+```
+
+Therefore, my next step was to find how gender plays into this distribution. Before I did so, I wanted to change my qualitative variables to quantitative. I decided to unclass the attractrate variable and rescales the existing scale (extremely unattractive, moderately unattractive, slightly unattractive, neither attractive nor unattractive, slightly attractive, moderately attractive, and extremely attractive) on a scale from 1-7, with 1 being extremely unattractive and 7 being extremely attractive. I also wanted to transform the numeric values from "PR" and "Gender" into easily recognizable categories: Democrat and Republican, and Female and Male.
+
+Then, I decided to use a scatterplot to break apart the distributions of registered political party by gender. Each point on the scatterplot represents a respondent's attractiveness rating of a target individual By doing so, we can consider how much of an impact gender plays into the overall distribbution of attractiveness ratings within each political party. The scatterplots, however, do not reveal clear patterns about the distribution across the respective genders for the political affiliations.
+
+```{r}
 # scatterplot
 scatter <-
   ggplot(data, aes(x = Gender, y = attractrate, color = `Registered Party`)) +
@@ -65,8 +83,14 @@ scatter <-
   labs(x = "Gender", y = "Attractiveness",
        title = "Perceived Attractiveness by Gender and Political Affiliation") +
   scale_color_manual(values = c(Democrat = "#4F5B67", Republican = "#B24202")) +
-  facet_wrap(~`Registered Party`, scales = "free_y", ncol = 2)
+  facet_wrap(~`Registered Party`, scales = "free_y", ncol = 2) +
+  theme_minimal()
+scatter
+```
 
+To see more clearly visualize the distribution across the respective genders for the political affiliations, I created a boxplot so I could determine the statistical distribution across respective genders within each political party, and see how the median and quartiles vary. Comparing the spread of the four boxplots, all distributions, regardless of gender and political affiliation appear consistent. This suggests that gender does not determine attractiveness ratings within each political party.
+
+```{r}
 # boxplot
 box <-
   ggplot(data, aes(x = Gender, y = attractrate, color = `Registered Party`)) +
@@ -74,13 +98,51 @@ box <-
   labs(x = "Gender", y = "Attractiveness",
        title = "Perceived Attractiveness by Gender and Political Affiliation") +
   scale_color_manual(values = c(Democrat = "#4F5B67", Republican = "#B24202")) +
-  facet_wrap(~`Registered Party`, scales = "free_y", ncol = 2)
-
-
-scatter
+  facet_wrap(~`Registered Party`, scales = "free_y", ncol = 2) +
+  theme_minimal()
 box
 ```
-My graph displays the data between male and female by registered political party and how each individual rated a partisan on attractiveness knowing their political identity. While my visualizations do not reveal the target partisan's politcal party, we can see from the scatterplot and the boxplot—especially—that the ratings tended to be similar regardless of party and gender.
+To consider the significance of the distribution of my variables, I ran a regression for attractrate and gender and politial affiliation.
+
+```{r}
+# run regression
+reg_attract <- lm(attractrate ~ Gender + `Registered Party`, data = data)
+
+# print table
+modelsummary::modelsummary(reg_attract,
+                           statistic = c("s.e. = {std.error}",
+                                         "p = {p.value}"),
+                           gof_map = c("nobs", "r.squared", "adj.r.squared"))
+```
+The intercept is at 4.876, revealing that the predicted value of attractrate when all other predictor variables are zero——male and Democrat. In other words, for a female Republican her predicted attractiveness rating for a target candidate is 4.876, or between "neither attractive nor unattractive" and "slightly attractive."
+
+The GenderMale is the estimated coefficient for males. In other words, the expected change in attractiveness ratings between males and females (a one unit increase represents female) is 0.199. This could suggest that females tend to rate target candidates higher than men, regardless of political affiliation. However, the p-value is 0.065. Let $\alpha$ = 0.05. In this case since the p-value is greater than the significance level, this means that gender is not statistically significant when determining attractrate.
+
+The Registered PartyRepublican is the estimated coefficient for registered Republicans.In other words, the expected change in attractiveness ratings between Republicans and Democrats (a one unit increase represents Democrat) is 0.007. This could suggest that Democrats tend to rate target candidates as more physically attractive than Republicans. However, the p-value is incredibly high at 0.946. If $\alpha$ = 0.05, registered political affiliation is not statistically significant when determining attractrate.
+
+## Conclusion
+This study attempted to explore the relationship between attractiveness ratings, political affiliation, and gender. While my hypothesis suggested that attractiveness ratings would vary across genders within registered political affiliation, the findings of my study do not support this claim. 
+
+With a regression table, I found that the distributions of attractiveness rating were mostly consistent across both political parties, with few variations. When exploring the impact of gender on attractiveness ratings, the estimated rating value was higher than that of the political parties. However, these results are not statistically significant, thus suggesting that perceived attraction is not significantly influenced by political affiliation or gender.
+
+
+## Limitations of Analysis and Threats to Inference
+My analysis has three key limitations:
+
+\begin{enumerate}
+  \item My study completely relies on a data from one source. This limits the general applicability of my analysis as the scope of my sourced            data set is limited to the American political landscape.
+  \item We must consider that the sourced data relied on a self-report method, which is a subjective method. Therefore, each respondent may            have different criteria for what they consider "neither attractive nor unattractive," for example. Furthermore, a partisan may be more         hesitant to express extreme responses such as "extremely unattractive."
+  \item My study simplifies attractiveness ratings to physical appearance. In reality, individuals tend to find personality traits or charisma         as additional indicators of attractiveness.
+\end{enumerate}
+
+## Ways to Improve
+I would start by collecting more diverse and representative data, with categories that range beyond two political parties and two genders. Furthermore, additional variables that relate to social dynamics, such as popularity, leadership qualities, charisma, etc. would provide a more nuanced perspective on attractiveness rating perceptions. Another key variable could be religious affiliation, sourced from both the respondent and target candidate. Additionally, I would include more insight about preferences. For example, a female who is attracted to other females may rate target candidates a lower attractiveness. Further research into these potential factors could provide additional insights into the dynamics of attractiveness ratings among different groups.
+
+Link to my datasource: https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/XIPZQT
+
+News, A. B. C. “‘Hot Convict’ Jeremy Meeks Released from Prison.” ABC News, 9 Mar. 2016, abcnews.go.com/US/hot-convict-jeremy-meeks-released-prison/story?id=37534131. Accessed 14 Dec. 2023.
+
+Smith, Talmon Joseph. Ex-Prisoners Face Headwinds as Job Seekers, Even as Openings Abound. 23 July 2023, www.nytimes.com/2023/07/06/business/economy/jobs-hiring-after-prison.html#:~:text=298-,Ex%2DPrisoners%20Face%20Headwinds%20as%20Job%20Seekers%2C%20Even%20as%20Openings,%2C%E2%80%9D%20some%20programs%20show%20promise.
 
 ```{r print-code, ref.label=knitr::all_labels(), echo = TRUE, eval=FALSE}
 
